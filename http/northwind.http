@@ -1,0 +1,23 @@
+# Read metadata
+GET {{$dotenv URL}}/$metadata
+
+###
+
+# Read customers count
+GET {{$dotenv URL}}/Customers/$count
+
+###
+
+# Read customers count in batch
+POST {{$dotenv URL}}/$batch
+Content-Type: multipart/mixed; boundary=batch
+
+--batch
+Content-Type: application/http
+Content-Transfer-Encoding: binary
+
+GET Customers/$count HTTP/1.1
+
+--batch--
+
+###

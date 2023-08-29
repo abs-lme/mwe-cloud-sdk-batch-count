@@ -1,0 +1,38 @@
+{
+  "name": "mwe-cloud-sdk-batch-count",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "npm-run-all build:*",
+    "build:odata": "npm-run-all generate-client",
+    "build:clean": "rimraf dist",
+    "build:ts": "tsc",
+    "format": "run-s format:*",
+    "format:prettier": "prettier src --write",
+    "format:eslint": "eslint --fix src",
+    "generate-client": "generate-odata-client -i service-specs --optionsPerService service-specs/options-per-service.json -o src/external/generated --overwrite --clearOutputDir",
+    "lint": "run-s lint:*",
+    "lint:eslint": "eslint src",
+    "lint:prettier": "prettier src --check",
+    "postinstall": "npm run generate-client",
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@sap-cloud-sdk/connectivity": "^3.4.0",
+    "@sap-cloud-sdk/http-client": "^3.4.0",
+    "@sap-cloud-sdk/odata-common": "^3.4.0",
+    "@sap-cloud-sdk/odata-v2": "^3.4.0",
+    "@sap-cloud-sdk/util": "^3.4.0"
+  },
+  "devDependencies": {
+    "@sap-cloud-sdk/generator": "^3.4.0",
+    "@types/node": "^18.17.8",
+    "eslint": "^8.48.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.0.2",
+    "rimraf": "^5.0.1",
+    "tsx": "^3.12.7",
+    "typescript": "^5.2.2"
+  }
+}

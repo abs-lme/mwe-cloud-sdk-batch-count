@@ -1,0 +1,7 @@
+{
+  "service-specs/northwind.edmx": {
+    "packageName": "impl-northwind",
+    "directoryName": "impl-northwind",
+    "basePath": "/"
+  }
+}
