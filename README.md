@@ -29,3 +29,9 @@ The script executes two `$count` requests:
   - when running the script you get a runtime error:  
     ![](image.png)
   - in the `http` test requests you can see that the server does accept `$count` in `$batch`
+
+## Branch `cloud-sdk-v1`
+
+This branch contains a version that uses v1 of the Cloud SDK. Here it is possible to execute `$count` in a `$batch` request by using type assertions to disable TS checks (the standard typings don't allow that).
+
+The metadata file has been reduced to only contain the `Customers` entity set, due to runtime errors when using the standard Northwind client.

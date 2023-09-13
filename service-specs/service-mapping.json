@@ -1,0 +1,7 @@
+{
+  "northwind": {
+    "directoryName": "impl-northwind",
+    "servicePath": "/",
+    "npmPackageName": "impl-northwind"
+  }
+}

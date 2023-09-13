@@ -1,17 +1,30 @@
-import { HttpDestination } from "@sap-cloud-sdk/connectivity";
-import { implNorthwind } from "./external/generated/impl-northwind";
+import { BatchResponse, Destination, ReadResponse } from "@sap-cloud-sdk/core";
 import { muteLoggers } from "@sap-cloud-sdk/util";
+import {
+  Customers,
+  ReadImplNorthwindRequestBuilder,
+  batch,
+} from "./external/generated/impl-northwind";
+// import axios from "axios";
 
 muteLoggers();
 
-const destination: HttpDestination = {
+const destination: Destination = {
   url: "https://services.odata.org/V2/Northwind/Northwind.svc",
 };
 
-const { customersApi, batch } = implNorthwind();
+// axios.interceptors.request.use((config) => {
+//   const requestPayload: string = config.data;
+//   console.log({ requestPayload });
+//   return config;
+// });
+// axios.interceptors.response.use((response) => {
+//   const { data: responsePayload } = response;
+//   console.log({ responsePayload });
+//   return response;
+// });
 
-const countDirect = await customersApi
-  .requestBuilder()
+const countDirect = await Customers.requestBuilder()
   .getAll()
   .count()
   .addCustomHeaders({ accept: "" })
@@ -19,8 +32,20 @@ const countDirect = await customersApi
 
 console.log({ countDirect });
 
-const countBatch = await batch(
-  <any>customersApi.requestBuilder().getAll().count()
-).execute(destination);
+const [response] = await batch(
+  Customers.requestBuilder().getAll().count().addCustomHeaders({
+    accept: "",
+    "content-type": "",
+  }) as unknown as ReadImplNorthwindRequestBuilder
+)
+  .withSubRequestPathType("absolute")
+  .execute(destination);
 
-console.log({ countBatch });
+if (isReadResponse(response)) {
+  const { body: countBatch } = response;
+  console.log({ countBatch });
+}
+
+function isReadResponse(response: BatchResponse): response is ReadResponse {
+  return response.isSuccess() && "body" in response;
+}
